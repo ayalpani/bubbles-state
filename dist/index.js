@@ -74,16 +74,6 @@ function actionSetHasServerConnection(value) {
     (0, react_ivity_1.notifySubscribers)("hasServerConnection");
 }
 exports.actionSetHasServerConnection = actionSetHasServerConnection;
-window.MyApp = {
+window.BubblesApp = {
     gps: appState.gps,
-    useSubscribeNightMode,
-    useSubscribeAuthUserId,
-    useSubscribeGps,
-    useSubscribeHasServerConnection,
-    actionLogMeOut,
-    actionSetNightMode,
-    actionSetGpsLocation,
-    actionSetGpsAllowed,
-    actionSetGpsEnabled,
-    actionSetHasServerConnection,
 };

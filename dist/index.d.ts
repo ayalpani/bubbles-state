@@ -31,18 +31,8 @@ export declare function actionSetGpsEnabled(value: boolean): void;
 export declare function actionSetHasServerConnection(value: boolean): void;
 declare global {
     interface Window {
-        MyApp: {
+        BubblesApp: {
             gps: GpsState;
-            useSubscribeNightMode: () => void;
-            useSubscribeAuthUserId(): string | undefined;
-            useSubscribeGps(): GpsState;
-            useSubscribeHasServerConnection(): boolean;
-            actionLogMeOut: () => void;
-            actionSetNightMode: (isNightMode: boolean) => void;
-            actionSetGpsLocation: (latLng: LatLng) => void;
-            actionSetGpsAllowed: (value: boolean) => void;
-            actionSetGpsEnabled: (value: boolean) => void;
-            actionSetHasServerConnection: (value: boolean) => void;
         };
     }
 }

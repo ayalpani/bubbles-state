@@ -105,34 +105,12 @@ export function actionSetHasServerConnection(value: boolean) {
 
 declare global {
   interface Window {
-    MyApp: {
+    BubblesApp: {
       gps: GpsState;
-      useSubscribeNightMode: () => void;
-      useSubscribeAuthUserId(): string | undefined;
-      useSubscribeGps(): GpsState;
-      useSubscribeHasServerConnection(): boolean;
-
-      actionLogMeOut: () => void;
-      actionSetNightMode: (isNightMode: boolean) => void;
-      actionSetGpsLocation: (latLng: LatLng) => void;
-      actionSetGpsAllowed: (value: boolean) => void;
-      actionSetGpsEnabled: (value: boolean) => void;
-      actionSetHasServerConnection: (value: boolean) => void;
     };
   }
 }
 
-window.MyApp = {
+window.BubblesApp = {
   gps: appState.gps,
-  useSubscribeNightMode,
-  useSubscribeAuthUserId,
-  useSubscribeGps,
-  useSubscribeHasServerConnection,
-
-  actionLogMeOut,
-  actionSetNightMode,
-  actionSetGpsLocation,
-  actionSetGpsAllowed,
-  actionSetGpsEnabled,
-  actionSetHasServerConnection,
 };
