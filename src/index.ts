@@ -113,14 +113,32 @@ declare global {
   interface Window {
     MyApp: {
       gps: GpsState;
-      actionSetHasServerConnection: (value: boolean) => void;
+      useSubscribeNightMode: () => void;
+      useSubscribeAuthUserId(): string | undefined;
+      useSubscribeGps(): GpsState;
+      useSubscribeHasServerConnection(): boolean;
+
+      actionLogMeOut: () => void;
+      actionSetNightMode: (isNightMode: boolean) => void;
       actionSetGpsLocation: (latLng: LatLng) => void;
+      actionSetGpsAllowed: (value: boolean) => void;
+      actionSetGpsEnabled: (value: boolean) => void;
+      actionSetHasServerConnection: (value: boolean) => void;
     };
   }
 }
 
 window.MyApp = {
   gps: appState.gps,
-  actionSetHasServerConnection: actionSetHasServerConnection,
-  actionSetGpsLocation: actionSetGpsLocation,
+  useSubscribeNightMode,
+  useSubscribeAuthUserId,
+  useSubscribeGps,
+  useSubscribeHasServerConnection,
+
+  actionLogMeOut,
+  actionSetNightMode,
+  actionSetGpsLocation,
+  actionSetGpsAllowed,
+  actionSetGpsEnabled,
+  actionSetHasServerConnection,
 };
