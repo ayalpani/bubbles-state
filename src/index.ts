@@ -2,12 +2,6 @@ import { notifySubscribers, useSubscribe } from "react-ivity";
 
 //////////////////// Types
 
-export type Todo = {
-  id: string;
-  title: string;
-  isDone: boolean;
-};
-
 export type LatLng = {
   latitude: number;
   longitude: number;

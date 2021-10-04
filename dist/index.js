@@ -1,34 +1,89 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.notifySubscribers = exports.useSubscribe = void 0;
-const react_1 = require("react");
-const subscriptionCallbacks = {};
-function registerCallback(subscriptionId, callback) {
-    if (!subscriptionCallbacks[subscriptionId]) {
-        subscriptionCallbacks[subscriptionId] = [];
-    }
-    subscriptionCallbacks[subscriptionId].push(callback);
+exports.actionSetHasServerConnection = exports.actionSetGpsEnabled = exports.actionSetGpsAllowed = exports.actionSetGpsLocation = exports.actionSetNightMode = exports.actionLogMeOut = exports.actionLogMeIn = exports.useSubscribeHasServerConnection = exports.useSubscribeGps = exports.useSubscribeAuthUserId = exports.useSubscribeNightMode = void 0;
+const react_ivity_1 = require("react-ivity");
+const initialAppState = {
+    nightMode: false,
+    hasServerConnection: true,
+    gps: {},
+};
+const appState = initialAppState;
+//////////////////// Subscribers
+function useSubscribeNightMode() {
+    (0, react_ivity_1.useSubscribe)("nightMode");
+    return appState.nightMode;
 }
-function unregisterCallback(subscriptionId, callback) {
+exports.useSubscribeNightMode = useSubscribeNightMode;
+function useSubscribeAuthUserId() {
     var _a;
-    subscriptionCallbacks[subscriptionId] = (_a = subscriptionCallbacks[subscriptionId]) === null || _a === void 0 ? void 0 : _a.filter((cb) => cb !== callback);
+    (0, react_ivity_1.useSubscribe)("authUserId");
+    return (_a = appState.auth) === null || _a === void 0 ? void 0 : _a.userId;
 }
-function useTriggerCallbackRef() {
-    // define trigger function to rerender component that uses the useSubscribe* hooks
-    const [, setTrigger] = (0, react_1.useState)(0);
-    return (0, react_1.useRef)(() => setTrigger((trigger) => trigger + 1)).current;
+exports.useSubscribeAuthUserId = useSubscribeAuthUserId;
+function useSubscribeGps() {
+    (0, react_ivity_1.useSubscribe)("gps");
+    return appState.gps;
 }
-function useSubscribe(subscriptionId) {
-    const callback = useTriggerCallbackRef();
-    // register and unregister trigger in registry
-    (0, react_1.useEffect)(() => {
-        registerCallback(subscriptionId, callback);
-        return () => unregisterCallback(subscriptionId, callback);
-    }, [subscriptionId, callback]);
+exports.useSubscribeGps = useSubscribeGps;
+function useSubscribeHasServerConnection() {
+    (0, react_ivity_1.useSubscribe)("hasServerConnection");
+    return appState.hasServerConnection;
 }
-exports.useSubscribe = useSubscribe;
-function notifySubscribers(subscriptionId) {
-    var _a;
-    (_a = subscriptionCallbacks[subscriptionId]) === null || _a === void 0 ? void 0 : _a.forEach((cb) => cb());
+exports.useSubscribeHasServerConnection = useSubscribeHasServerConnection;
+//////////////////// Actions
+function actionLogMeIn(userId) {
+    appState.auth = {
+        userId,
+    };
+    (0, react_ivity_1.notifySubscribers)("authUserId");
 }
-exports.notifySubscribers = notifySubscribers;
+exports.actionLogMeIn = actionLogMeIn;
+function actionLogMeOut() {
+    appState.auth = undefined;
+    (0, react_ivity_1.notifySubscribers)("authUserId");
+}
+exports.actionLogMeOut = actionLogMeOut;
+function actionSetNightMode(isNightMode) {
+    console.log("actionSetNightMode");
+    appState.nightMode = isNightMode;
+    (0, react_ivity_1.notifySubscribers)("nightMode");
+}
+exports.actionSetNightMode = actionSetNightMode;
+function actionSetGpsLocation(latLng) {
+    console.log("actionSetGpsLocation");
+    appState.gps.value = {
+        latLng,
+        timestamp: new Date().getTime(),
+    };
+    (0, react_ivity_1.notifySubscribers)("gpsLocation");
+    (0, react_ivity_1.notifySubscribers)("gps");
+}
+exports.actionSetGpsLocation = actionSetGpsLocation;
+function actionSetGpsAllowed(value) {
+    appState.gps.allowed = value;
+    (0, react_ivity_1.notifySubscribers)("gps");
+}
+exports.actionSetGpsAllowed = actionSetGpsAllowed;
+function actionSetGpsEnabled(value) {
+    appState.gps.enabled = value;
+    (0, react_ivity_1.notifySubscribers)("gps");
+}
+exports.actionSetGpsEnabled = actionSetGpsEnabled;
+function actionSetHasServerConnection(value) {
+    appState.hasServerConnection = value;
+    (0, react_ivity_1.notifySubscribers)("hasServerConnection");
+}
+exports.actionSetHasServerConnection = actionSetHasServerConnection;
+window.MyApp = {
+    gps: appState.gps,
+    useSubscribeNightMode,
+    useSubscribeAuthUserId,
+    useSubscribeGps,
+    useSubscribeHasServerConnection,
+    actionLogMeOut,
+    actionSetNightMode,
+    actionSetGpsLocation,
+    actionSetGpsAllowed,
+    actionSetGpsEnabled,
+    actionSetHasServerConnection,
+};
